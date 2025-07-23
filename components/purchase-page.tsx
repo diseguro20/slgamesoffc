@@ -5,6 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Star } from "lucide-react"
+import { Input } from "@/components/ui/input"
 
 interface PurchasePageProps {
   slug: string
@@ -140,6 +141,7 @@ export default function PurchasePage({ slug }: PurchasePageProps) {
   const [selectedVariant, setSelectedVariant] = useState<any>(
     product.variants.find((v) => v.popular) || product.variants[0],
   )
+  const [username, setUsername] = useState("")
 
   const REVIEWS_PER_PAGE = 3 // Define quantas avaliações por página
   const [currentPage, setCurrentPage] = useState(1) // Estado para a página atual das avaliações
@@ -243,6 +245,19 @@ export default function PurchasePage({ slug }: PurchasePageProps) {
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">{product.name}</h1>
           <p className="text-gray-600">{product.description}</p>
+          <div className="mt-6 mb-8 w-full max-w-md mx-auto">
+            <label htmlFor="username-input" className="block text-lg font-semibold text-gray-800 mb-2 text-left">
+              Informe seu ID de Usuário / Nick:
+            </label>
+            <Input
+              id="username-input"
+              type="text"
+              placeholder="Ex: SeuNickNoJogo ou ID"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-900"
+            />
+          </div>
         </div>
 
         {/* Product Variants */}
@@ -284,6 +299,7 @@ export default function PurchasePage({ slug }: PurchasePageProps) {
                 <Button
                   onClick={() => handlePurchase(variant)}
                   className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 flex items-center justify-center gap-2"
+                  disabled={!username}
                 >
                   COMPRAR
                   <Image
